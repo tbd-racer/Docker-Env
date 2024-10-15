@@ -95,6 +95,7 @@ def docker_build_image(
     tags: list,
     arch: str,
     clean: bool = False,
+    push: bool = False,
     file_path: str = "",
     args: list = []
 ) -> bool:
@@ -104,7 +105,6 @@ def docker_build_image(
         "buildx",
         "build",
         "--progress=plain",
-        "--push",
     ]
 
     # add all of the tags in
@@ -114,6 +114,10 @@ def docker_build_image(
     # handle the clean arg properly
     if clean:
         docker_cmd.append("--no-cache")
+
+    # handle pushing from the build
+    if push:
+        docker_cmd.append("--push")
 
     # deal with a specified docker file
     if file_path != "":

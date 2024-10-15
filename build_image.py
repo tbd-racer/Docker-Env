@@ -10,6 +10,7 @@ def main() -> None:
         "type", choices=["develop", "deploy"], help="Image type to build"
     )
     parser.add_argument("-c", "--clean", action="store_true", help="Force the build to a clean state")
+    parser.add_argument("-p", "--push", action="store_true", help="Have docker push the image as a final step")
 
     # get the working directory
     work_path = os.path.dirname(os.path.realpath(__file__))
@@ -58,6 +59,7 @@ def main() -> None:
         ["latest", settings["git_hash"]],
         settings["docker_arch"],
         args.clean,
+        args.push,
         settings["file"],
         [f"BASE_IMG={settings['base_img']}"],
     )
