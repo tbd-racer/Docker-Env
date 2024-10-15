@@ -1,5 +1,5 @@
 # Need an intial docker image that matches our kernel
-FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
+FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04
 
 # Define base env vars
 ENV DEBIAN_FRONTEND=noninteractive \
