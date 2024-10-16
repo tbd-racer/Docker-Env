@@ -84,7 +84,7 @@ rm -r ${ROS_ROOT}/src/ament_cmake
 git -C ${ROS_ROOT}/src/ clone https://github.com/ament/ament_cmake -b ${ROS_DISTRO}
 
 # skip installation of some conflicting packages
-SKIP_KEYS="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv"
+SKIP_KEYS="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv rti-connext-dds-6.0.1"
 
 # patches for building Humble on 18.04
 if [ "$ROS_DISTRO" = "humble" ] || [ "$ROS_DISTRO" = "iron" ] && [ $(lsb_release --codename --short) = "bionic" ]; then
