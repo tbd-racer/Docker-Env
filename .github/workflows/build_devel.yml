@@ -30,5 +30,5 @@ jobs:
           push: true
           file: dockerfiles/tbd-racer-develop.dockerfile
           tags: |
-            coalman321/tbd-racer-develop:latest-x86_64
-            coalman321/tbd-racer-develop:${{steps.vars.outputs.sha_short}}-x86_64
+            coalman321/tbd-racer-develop:latest-amd64
+            coalman321/tbd-racer-develop:${{steps.vars.outputs.sha_short}}-amd64
