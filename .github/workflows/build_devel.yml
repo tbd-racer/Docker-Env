@@ -40,7 +40,7 @@ jobs:
   build-arm64:
     runs-on: 
     - self-hosted
-    - arm64
+    - ARM64
     steps:
       - uses: actions/checkout@v4
 
