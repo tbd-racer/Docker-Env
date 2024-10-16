@@ -32,3 +32,5 @@ jobs:
           tags: |
             coalman321/tbd-racer-develop:latest-amd64
             coalman321/tbd-racer-develop:${{steps.vars.outputs.sha_short}}-amd64
+          cache-from: type=registry,ref=coalman321/tbd-racer-develop:latest-amd64
+          cache-to: type=inline
