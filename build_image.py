@@ -28,14 +28,12 @@ def main() -> None:
         "distro": "ubuntu2204",
         "img_name_base": "coalman321/tbd-racer-{}",
         "file": "",
+        "tags": [],
     }
 
     # Parse the args and set common settings
     args = parser.parse_args()
     if args.type == "develop":
-        # generic development settings
-        settings["file"] = os.path.join("dockerfiles", "tbd-racer-develop.dockerfile")
-
         # Arch speicifc settings
         if settings["local_arch"] == "aarch64" or "arm" in settings["local_arch"]:
             settings["cuda_arch"] = "arm64"
@@ -44,10 +42,20 @@ def main() -> None:
             settings["cuda_arch"] = "x86_64"
             settings["docker_arch"] = "linux/amd64"
 
+        # generic development settings
+        settings["file"] = os.path.join("dockerfiles", "tbd-racer-develop.dockerfile")
+        settings["tags"] = [
+            "latest-{}".format(settings["docker_arch"].split("/")[-1]),
+            "{}-{}".format(
+                settings["git_hash"], settings["docker_arch"].split("/")[-1]
+            ),
+        ]
+
     elif args.type == "deploy":
         settings["file"] = os.path.join("dockerfiles", "tbd-racer-deploy.dockerfile")
         settings["cuda_arch"] = "arm64"
         settings["docker_arch"] = "linux/arm64"
+        settings["tags"] = ["latest", settings["git_hash"]]
 
     else:
         print(f"Uknown build type {args.type}")
@@ -59,10 +67,7 @@ def main() -> None:
     docker_build_image(
         "docker.io",
         image_name,
-        [
-            "latest-{}".format(settings["docker_arch"].split("/")[-1]),
-            "{}-{}".format(settings["git_hash"], settings["docker_arch"].split("/")[-1]),
-        ],
+        settings["tags"],
         settings["docker_arch"],
         args.clean,
         args.push,
