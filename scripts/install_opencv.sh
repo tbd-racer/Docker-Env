@@ -90,8 +90,6 @@ install_opencv () {
     -D BUILD_TIFF=ON \
     -D WITH_FFMPEG=ON \
     -D WITH_GSTREAMER=ON \
-    -D WITH_TBB=ON \
-    -D BUILD_TBB=ON \
     -D BUILD_TESTS=OFF \
     -D WITH_EIGEN=ON \
     -D WITH_V4L=ON \
