@@ -27,7 +27,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.type == "develop":
         # generic development settings
-        settings["file"] = os.path.join("dockerfiles", "tbd-racer-devel.dockerfile")
+        settings["file"] = os.path.join("dockerfiles", "tbd-racer-develop.dockerfile")
 
         # Arch speicifc settings
         if settings["local_arch"] == "aarch64" or "arm" in settings["local_arch"]:
@@ -45,10 +45,13 @@ def main() -> None:
     else:
         print(f"Uknown build type {args.type}")
 
+    image_name = settings["img_name_base"].format(args.type)
+    print(f"Building docker.io/{image_name}")
+
         # build the docker image
     docker_build_image(
         "docker.io",
-        settings["img_name_base"].format(args.type),
+        image_name,
         ["latest", settings["git_hash"]],
         settings["docker_arch"],
         args.clean,

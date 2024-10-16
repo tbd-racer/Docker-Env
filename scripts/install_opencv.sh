@@ -83,7 +83,8 @@ install_opencv () {
     -D ENABLE_FAST_MATH=ON \
     -D CUDA_FAST_MATH=ON \
     -D OPENCV_DNN_CUDA=ON \
-    -D ENABLE_NEON=ON \
+    -D WITH_NVCUVID=OFF \
+    -D WITH_NVCUVENC=OFF \
     -D WITH_QT=OFF \
     -D WITH_OPENMP=ON \
     -D BUILD_TIFF=ON \
