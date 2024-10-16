@@ -9,15 +9,22 @@ def main() -> None:
     parser.add_argument(
         "type", choices=["develop", "deploy"], help="Image type to build"
     )
-    parser.add_argument("-c", "--clean", action="store_true", help="Force the build to a clean state")
-    parser.add_argument("-p", "--push", action="store_true", help="Have docker push the image as a final step")
+    parser.add_argument(
+        "-c", "--clean", action="store_true", help="Force the build to a clean state"
+    )
+    parser.add_argument(
+        "-p",
+        "--push",
+        action="store_true",
+        help="Have docker push the image as a final step",
+    )
 
     # default settings for the deploy build
     settings = {
         "local_arch": platform.machine(),
         "git_hash": get_git_revision_short_hash(),
         "cuda_arch": "arm64",
-        "docker_arch": "arm64v8",
+        "docker_arch": "linux/arm64",
         "distro": "ubuntu2204",
         "img_name_base": "coalman321/tbd-racer-{}",
         "file": "",
@@ -48,11 +55,14 @@ def main() -> None:
     image_name = settings["img_name_base"].format(args.type)
     print(f"Building docker.io/{image_name}")
 
-        # build the docker image
+    # build the docker image
     docker_build_image(
         "docker.io",
         image_name,
-        ["latest", settings["git_hash"]],
+        [
+            "latest-{}".format(settings["docker_arch"].split("/")[-1]),
+            "{}-{}".format(settings["git_hash"], settings["docker_arch"].split("/")[-1]),
+        ],
         settings["docker_arch"],
         args.clean,
         args.push,
