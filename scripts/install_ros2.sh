@@ -75,6 +75,8 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 	joint_state_publisher \
 	rosbag2_storage_mcap \
 	tf2_geometry_msgs \
+	cv_bridge \
+	image_transport \
 > ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
