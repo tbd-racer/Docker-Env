@@ -18,6 +18,12 @@ RUN chmod +x /install_gtsam.sh && /bin/sh -c /install_gtsam.sh
 # Install the patched Apriltag library
 RUN chmod +x /install_apriltag.sh && /bin/sh -c /install_apriltag.sh
 
+# Install Sophus
+RUN chmod +x /install_sophus.sh && /bin/sh -c /install_sophus.sh
+
+# Install Phoenix6
+RUN chmod +x /install_phoenix6.sh && /bin/sh -c /install_phoenix6.sh
+
 ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
@@ -26,6 +32,7 @@ RUN chmod +x /install_ros2.sh && /bin/sh -c /install_ros2.sh
 
 # Install PTP binaries
 RUN chmod +x /install_ptp.sh && /bin/sh -c /install_ptp.sh
+
 
 # setup the entrypoint
 # commands will be appended/run by the entrypoint which sources the ROS environment

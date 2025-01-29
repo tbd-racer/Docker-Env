@@ -5,7 +5,7 @@ VERSION=main
 
 cd /
 
-# Download the Protobuf version if not exists then unzip
+# Download the Apriltag version if not exists then unzip
 git clone -b ${VERSION} https://github.com/coalman321/apriltag.git
 cd apriltag
 

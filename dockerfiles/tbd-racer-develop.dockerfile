@@ -18,6 +18,12 @@ RUN chmod +x /install_apriltag.sh && /bin/sh -c /install_apriltag.sh
 # Install GTSAM
 RUN chmod +x /install_gtsam.sh && /bin/sh -c /install_gtsam.sh
 
+# Install Sophus
+RUN chmod +x /install_sophus.sh && /bin/sh -c /install_sophus.sh
+
+# Install Phoenix6
+RUN chmod +x /install_phoenix6.sh && /bin/sh -c /install_phoenix6.sh
+
 # Install ROS2 Jazzy
 ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
