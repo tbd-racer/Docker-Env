@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # The Sophus version string to use
-VERSION=pin
-TAG="1.22.10"
+VERSION="1.22.10"
 
 # Download the Sophus version if not exists then unzip
-git clone ${TAG} -b ${VERSION} https://github.com/strasdat/Sophus.git
+git clone  --depth 1 -b ${VERSION} https://github.com/strasdat/Sophus.git
 cd Sophus
 
 # run the setup script

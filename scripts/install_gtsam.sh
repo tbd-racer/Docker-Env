@@ -6,7 +6,7 @@ VERSION=4.2
 cd /
 
 # Download the Protobuf version if not exists then unzip
-git clone -b ${VERSION} https://github.com/borglab/gtsam.git
+git clone --depth 1 -b ${VERSION} https://github.com/borglab/gtsam.git
 cd gtsam
 
 # install deps for GTSAM

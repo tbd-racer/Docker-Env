@@ -6,7 +6,7 @@ VERSION=main
 cd /
 
 # Download the Apriltag version if not exists then unzip
-git clone -b ${VERSION} https://github.com/coalman321/apriltag.git
+git clone --depth 1 -b ${VERSION} https://github.com/coalman321/apriltag.git
 cd apriltag
 
 # make a build directory for staging
