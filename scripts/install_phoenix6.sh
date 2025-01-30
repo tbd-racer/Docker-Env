@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# make sure curl is installed
+apt update
+apt upgrade -y
+apt install -y --no-install-recommends curl
+
 # Based on https://v6.docs.ctr-electronics.com/en/latest/docs/installation/installation-nonfrc.html
 
 export YEAR=2024
