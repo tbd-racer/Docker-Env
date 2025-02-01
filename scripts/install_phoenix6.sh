@@ -7,7 +7,7 @@ apt install -y --no-install-recommends curl
 
 # Based on https://v6.docs.ctr-electronics.com/en/latest/docs/installation/installation-nonfrc.html
 
-export YEAR=2024
+export YEAR=2025
 curl -s --compressed -o /usr/share/keyrings/ctr-pubkey.gpg "https://deb.ctr-electronics.com/ctr-pubkey.gpg"
 curl -s --compressed -o /etc/apt/sources.list.d/ctr${YEAR}.list "https://deb.ctr-electronics.com/ctr${YEAR}.list"
 
