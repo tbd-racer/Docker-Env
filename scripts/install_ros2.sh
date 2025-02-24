@@ -54,6 +54,8 @@ apt-get install -y --no-install-recommends \
 # workaround for 'Could NOT find Python3 (missing: Python3_NumPy_INCLUDE_DIRS Development'
 apt purge -y python3.9 libpython3.9* || echo "python3.9 not found, skipping removal"
 ls -ll /usr/bin/python*
+
+pip install fastapi uvicorn
     
 # create the ROS_ROOT directory
 mkdir -p ${ROS_ROOT}/src
@@ -78,6 +80,7 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 	cv_bridge \
 	image_transport \
 	robot_localization \
+	web_video_server \
 > ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
