@@ -20,6 +20,7 @@ tar -xf ./pylon.tar.gz -C ./pylon_install
 
 cd ./pylon_install
 
+mkdir -p /opt/pylon
 tar -C /opt/pylon -xzf ./pylon-*.tar.gz
 chmod 755 /opt/pylon
 
