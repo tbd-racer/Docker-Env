@@ -7,38 +7,49 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONIOENCODING=utf-8 \
     DISTRO=ubuntu2204
 
-COPY scripts/*.sh /
+# Install neweer version of CMAKE
+COPY scripts/install_cmake.sh /
+RUN /bin/sh -c /install_cmake.sh
 
-# Upgrade the containers opencv version
-RUN chmod +x /install_opencv.sh && /bin/sh -c /install_opencv.sh
-
-# Install Apriltag
-RUN chmod +x /install_apriltag.sh && /bin/sh -c /install_apriltag.sh
+# Install opencv with CUDA enabled
+COPY scripts/install_opencv.sh /
+RUN /bin/sh -c /install_opencv.sh
 
 # Install GTSAM
-RUN chmod +x /install_gtsam.sh && /bin/sh -c /install_gtsam.sh
+COPY scripts/install_gtsam.sh /
+RUN /bin/sh -c /install_gtsam.sh
+
+# Install the patched Apriltag library
+COPY scripts/install_apriltag.sh /
+RUN /bin/sh -c /install_apriltag.sh
 
 # Install Sophus
-RUN chmod +x /install_sophus.sh && /bin/sh -c /install_sophus.sh
+COPY scripts/install_sophus.sh /
+RUN /bin/sh -c /install_sophus.sh
 
 # Install Phoenix6
-RUN chmod +x /install_phoenix6.sh && /bin/sh -c /install_phoenix6.sh
+COPY scripts/install_phoenix6.sh /
+RUN /bin/sh -c /install_phoenix6.sh
 
 # Install Pylon
-RUN chmod +x /install_pylon.sh && /bin/sh -c /install_pylon.sh
+COPY scripts/install_pylon.sh /
+RUN /bin/sh -c /install_pylon.sh
 
 # Install ROS2 Jazzy
 ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
-RUN chmod +x /install_ros2.sh && /bin/sh -c /install_ros2.sh
+COPY scripts/install_ros2.sh /
+RUN /bin/sh -c /install_ros2.sh
 
 # Install PTP binaries
-RUN chmod +x /install_ptp.sh && /bin/sh -c /install_ptp.sh
+COPY scripts/install_ptp.sh /
+RUN /bin/sh -c /install_ptp.sh
 
 # Install Development Tools
-RUN chmod +x /install_dev_tools.sh && /bin/sh -c /install_dev_tools.sh
+COPY scripts/install_dev_tools.sh /
+RUN /bin/sh -c /install_dev_tools.sh
 
 # setup the entrypoint
 # commands will be appended/run by the entrypoint which sources the ROS environment

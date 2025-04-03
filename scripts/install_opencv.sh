@@ -39,7 +39,7 @@ install_opencv () {
 
     # install the common dependencies
     apt update
-    apt install -y --no-install-recommends cmake \
+    apt install -y --no-install-recommends \
     git build-essential \
     libjpeg-dev libjpeg8-dev libjpeg-turbo8-dev \
     libpng-dev libtiff-dev libglew-dev \
