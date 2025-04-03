@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # The Sophus version string to use
-VERSION="1.22.10"
+VERSION="1.24.6"
 
 # Download the Sophus version if not exists then unzip
 git clone  --depth 1 -b ${VERSION} https://github.com/strasdat/Sophus.git
