@@ -99,7 +99,7 @@ test -n "${get_keyring}" && rm /usr/share/keyrings/kitware-archive-keyring.gpg
 apt-get install -y kitware-archive-keyring
 
 apt purge cmake 
-apt install cmake -y
+apt install cmake=3.31.6-0kitware1ubuntu22.04.1 cmake-data=3.31.6-0kitware1ubuntu22.04.1 -y
 
 # cleanup apt   
 rm -rf /var/lib/apt/lists/*
