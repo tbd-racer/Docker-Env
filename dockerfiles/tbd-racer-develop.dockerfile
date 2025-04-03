@@ -24,6 +24,9 @@ RUN chmod +x /install_sophus.sh && /bin/sh -c /install_sophus.sh
 # Install Phoenix6
 RUN chmod +x /install_phoenix6.sh && /bin/sh -c /install_phoenix6.sh
 
+# Install Pylon
+RUN chmod +x /install_pylon.sh && /bin/sh -c /install_pylon.sh
+
 # Install ROS2 Jazzy
 ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
