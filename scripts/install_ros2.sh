@@ -83,6 +83,8 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 	web_video_server \
 	image_geometry \
 	diagnostic_updater \
+	camera_info_manager \
+	pcl_ros \
 > ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
