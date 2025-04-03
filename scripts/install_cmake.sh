@@ -98,8 +98,10 @@ apt-get update
 test -n "${get_keyring}" && rm /usr/share/keyrings/kitware-archive-keyring.gpg
 apt-get install -y kitware-archive-keyring
 
+cmake_version="3.28.6-0kitware1ubuntu22.04.1"
+
 apt purge cmake 
-apt install cmake=3.31.6-0kitware1ubuntu22.04.1 cmake-data=3.31.6-0kitware1ubuntu22.04.1 -y
+apt install cmake=$cmake_version cmake-data=$cmake_version -y
 
 # cleanup apt   
 rm -rf /var/lib/apt/lists/*
