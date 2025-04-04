@@ -54,8 +54,7 @@ install_opencv () {
     libopenblas-dev libatlas-base-dev libblas-dev \
     liblapack-dev liblapacke-dev libeigen3-dev gfortran \
     libhdf5-dev libprotobuf-dev protobuf-compiler \
-    libgoogle-glog-dev libgflags-dev \
-    tensorrt-dev
+    libgoogle-glog-dev libgflags-dev
 
     # remove old versions or previous builds
     cd ~ 

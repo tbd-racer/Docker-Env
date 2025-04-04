@@ -1,5 +1,6 @@
 # Need an intial docker image that matches our kernel
-FROM dustynv/cudnn:8.9-r36.2.0
+# FROM dustynv/cudnn:8.9-r36.2.0
+FROM dustynv/onnxruntime:r36.2.0
 
 # Define base env vars
 ENV DEBIAN_FRONTEND=noninteractive \
