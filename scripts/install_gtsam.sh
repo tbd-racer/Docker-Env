@@ -14,11 +14,6 @@ apt update
 apt upgrade -y
 apt install -y --no-install-recommends libboost-all-dev libeigen3-dev
 
-# optionally install build tools & cmake
-if command -v cmake >&2; then
-    apt install -y --no-install-recommends build-essential cmake
-fi
-
 # make a build directory for staging
 mkdir build
 cd build

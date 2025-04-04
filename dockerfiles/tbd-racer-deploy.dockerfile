@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONIOENCODING=utf-8 \
     DISTRO=ubuntu2204
 
-# Install neweer version of CMAKE
+# Install newer version of CMAKE
 COPY scripts/install_cmake.sh /
 RUN /bin/sh -c /install_cmake.sh
 

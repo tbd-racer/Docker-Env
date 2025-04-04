@@ -101,7 +101,9 @@ apt-get install -y kitware-archive-keyring
 cmake_version="3.28.6-0kitware1ubuntu22.04.1"
 
 apt purge cmake 
-apt install cmake=$cmake_version cmake-data=$cmake_version -y
+apt install build-essential git -y --no-install-recommends
+apt install cmake=$cmake_version cmake-data=$cmake_version -y --no-install-recommends
+apt-mark hold cmake cmake-data
 
 # cleanup apt   
 rm -rf /var/lib/apt/lists/*

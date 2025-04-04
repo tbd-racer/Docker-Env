@@ -32,9 +32,6 @@ apt-get update
 
 # install development packages
 apt-get install -y --no-install-recommends \
-		build-essential \
-		cmake \
-		git \
 		libbullet-dev \
 		libpython3-dev \
 		python3-colcon-common-extensions \
@@ -89,7 +86,7 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 
-git clone https://github.com/basler/pylon-ros-camera.git src/pylon-ros-camera
+git clone https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
     
 # https://github.com/dusty-nv/jetson-containers/issues/181
 rm -r ${ROS_ROOT}/src/ament_cmake

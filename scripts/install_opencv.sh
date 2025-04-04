@@ -40,7 +40,6 @@ install_opencv () {
     # install the common dependencies
     apt update
     apt install -y --no-install-recommends \
-    git build-essential \
     libjpeg-dev libjpeg8-dev libjpeg-turbo8-dev \
     libpng-dev libtiff-dev libglew-dev \
     libavcodec-dev libavformat-dev libswscale-dev \
@@ -56,6 +55,7 @@ install_opencv () {
     liblapack-dev liblapacke-dev libeigen3-dev gfortran \
     libhdf5-dev libprotobuf-dev protobuf-compiler \
     libgoogle-glog-dev libgflags-dev \
+    tensorrt-dev
 
     # remove old versions or previous builds
     cd ~ 
