@@ -49,6 +49,7 @@ RUN /bin/sh -c /install_ptp.sh
 
 # setup the entrypoint
 # commands will be appended/run by the entrypoint which sources the ROS environment
+COPY scripts/ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["/bin/bash"]
