@@ -45,7 +45,9 @@ apt-get install -y --no-install-recommends \
 		python3-rosinstall-generator \
 		libasio-dev \
 		libtinyxml2-dev \
-		libcunit1-dev
+		libcunit1-dev \
+		libpcap-dev \
+        libudev-dev
 
 # remove other versions of Python3
 # workaround for 'Could NOT find Python3 (missing: Python3_NumPy_INCLUDE_DIRS Development'
@@ -86,7 +88,13 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 
+# support for plyon cameras
 git clone https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
+
+# micro-ros support with CAN agent
+git clone https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
+git clone https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs
+git clone https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent
     
 # https://github.com/dusty-nv/jetson-containers/issues/181
 rm -r ${ROS_ROOT}/src/ament_cmake

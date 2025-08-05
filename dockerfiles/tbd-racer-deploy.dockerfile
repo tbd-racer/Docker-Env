@@ -29,8 +29,8 @@ COPY scripts/install_sophus.sh /
 RUN /bin/sh -c /install_sophus.sh
 
 # Install Phoenix6
-COPY scripts/install_phoenix6.sh /
-RUN /bin/sh -c /install_phoenix6.sh
+# COPY scripts/install_phoenix6.sh /
+# RUN /bin/sh -c /install_phoenix6.sh
 
 # Install Pylon
 COPY scripts/install_pylon.sh /
