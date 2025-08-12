@@ -27,6 +27,7 @@ RUN /bin/sh -c /install_apriltag.sh
 COPY scripts/install_sophus.sh /
 RUN /bin/sh -c /install_sophus.sh
 
+
 # Install Phoenix6
 # COPY scripts/install_phoenix6.sh /
 # RUN /bin/sh -c /install_phoenix6.sh
@@ -42,6 +43,10 @@ ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
 COPY scripts/install_ros2.sh /
 RUN /bin/sh -c /install_ros2.sh
+
+# Install RTABMap
+COPY scripts/install_rtabmap.sh /
+RUN /bin/sh -c /install_rtabmap.sh
 
 # Install PTP binaries
 COPY scripts/install_ptp.sh /

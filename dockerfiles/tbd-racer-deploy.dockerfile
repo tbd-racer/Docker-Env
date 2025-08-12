@@ -43,10 +43,13 @@ ENV ROS_PYTHON_VERSION=3
 COPY scripts/install_ros2.sh /
 RUN /bin/sh -c /install_ros2.sh
 
+# Install RTABMap
+COPY scripts/install_rtabmap.sh /
+RUN /bin/sh -c /install_rtabmap.sh
+
 # Install PTP binaries
 COPY scripts/install_ptp.sh /
 RUN /bin/sh -c /install_ptp.sh
-
 
 # setup the entrypoint
 # commands will be appended/run by the entrypoint which sources the ROS environment
