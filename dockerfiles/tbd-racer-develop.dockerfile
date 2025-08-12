@@ -15,22 +15,9 @@ RUN /bin/sh -c /install_cmake.sh
 COPY scripts/install_opencv.sh /
 RUN /bin/sh -c /install_opencv.sh
 
-# Install GTSAM
-COPY scripts/install_gtsam.sh /
-RUN /bin/sh -c /install_gtsam.sh
-
 # Install the patched Apriltag library
 COPY scripts/install_apriltag.sh /
 RUN /bin/sh -c /install_apriltag.sh
-
-# Install Sophus
-COPY scripts/install_sophus.sh /
-RUN /bin/sh -c /install_sophus.sh
-
-
-# Install Phoenix6
-# COPY scripts/install_phoenix6.sh /
-# RUN /bin/sh -c /install_phoenix6.sh
 
 # Install Pylon
 COPY scripts/install_pylon.sh /
@@ -41,12 +28,8 @@ ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
-COPY scripts/install_ros2.sh /
+COPY scripts/install_ros2.sh scripts/colcon.meta /
 RUN /bin/sh -c /install_ros2.sh
-
-# Install RTABMap
-COPY scripts/install_rtabmap.sh /
-RUN /bin/sh -c /install_rtabmap.sh
 
 # Install PTP binaries
 COPY scripts/install_ptp.sh /

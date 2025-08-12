@@ -1,0 +1,32 @@
+{
+    "names": {
+        "gtsam": {
+            "cmake-args": [
+                "-DGTSAM_USE_SYSTEM_EIGEN=ON",
+                "-DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF"
+            ]
+        },
+        "rtabmap": {
+            "cmake-args": [
+                "-DBUILD_APP=OFF",
+                "-DBUILD_TOOLS=OFF",
+                "-DBUILD_EXAMPLES=OFF",
+                "-DWITH_QT=OFF",
+                "-DWITH_FREENECT=OFF",
+                "-DWITH_FREENECT2=OFF",
+                "-DWITH_K4W2=OFF",
+                "-DWITH_K4A=OFF",
+                "-DWITH_ZED=OFF",
+                "-DWITH_ZEDOC=OFF",
+                "-DWITH_REALSENSE=OFF",
+                "-DWITH_REALSENSE_SLAM=OFF",
+                "-DWITH_REALSENSE2=OFF",
+                "-DWITH_MYNTEYE=OFF",
+                "-DWITH_G2O=OFF",
+                "-DWITH_TORO=OFF",
+                "-DWITH_ORB_OCTREE=OFF",
+                "-DWITH_OCTOMAP=ON"
+            ]
+        }
+    }
+}

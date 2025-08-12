@@ -63,27 +63,11 @@ cd ${ROS_ROOT}
 # download ROS sources
 # https://answers.ros.org/question/325245/minimal-ros2-installation/?answer=325249#post-id-325249
 rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
-	launch_xml \
-	launch_yaml \
-	launch_testing \
-	launch_testing_ament_cmake \
-	demo_nodes_cpp \
-	demo_nodes_py \
-	example_interfaces \
-	vision_msgs \
-	xacro \
-	robot_state_publisher \
-	joint_state_publisher \
-	rosbag2_storage_mcap \
-	tf2_geometry_msgs \
-	cv_bridge \
-	image_transport \
-	robot_localization \
-	web_video_server \
-	image_geometry \
-	diagnostic_updater \
-	camera_info_manager \
-	pcl_ros \
+	launch_xml launch_yaml launch_testing launch_testing_ament_cmake example_interfaces \
+	vision_msgs xacro robot_state_publisher joint_state_publisher rosbag2_storage_mcap \
+	tf2_geometry_msgs cv_bridge image_transport robot_localization web_video_server \
+	image_geometry diagnostic_updater camera_info_manager pcl_ros octomap_ros rtabmap \
+	laser_geometry aruco_opencv_msgs aruco_msgs apriltag_msgs nav2_msgs gtsam \
 > ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
@@ -95,13 +79,25 @@ git clone https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon
 git clone https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
 git clone https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs
 git clone https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent
+
+# Use a manually grabbed rtab map to prevent rviz from coming in
+git clone https://github.com/introlab/rtabmap_ros.git -b 0.22.1-jazzy src/rtabmap_ros
+sed -i '13,20d' src/rtabmap_ros/rtabmap_msgs/CMakeLists.txt
+sed -i '8,15d' src/rtabmap_ros/rtabmap_conversions/CMakeLists.txt
+sed -i '6,10d' src/rtabmap_ros/rtabmap_sync/CMakeLists.txt
+sed -i '13,20d' src/rtabmap_ros/rtabmap_odom/CMakeLists.txt
+sed -i '13,20d' src/rtabmap_ros/rtabmap_slam/CMakeLists.txt
+rm -rf src/rtabmap_ros/rtabmap_viz src/rtabmap_ros/rtabmap_rviz_plugins \
+  src/rtabmap_ros/rtabmap_demos src/rtabmap_ros/rtabmap_examples
+
     
 # https://github.com/dusty-nv/jetson-containers/issues/181
 rm -r ${ROS_ROOT}/src/ament_cmake
 git -C ${ROS_ROOT}/src/ clone https://github.com/ament/ament_cmake -b ${ROS_DISTRO}
 
 # skip installation of some conflicting packages
-SKIP_KEYS="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv rti-connext-dds-6.0.1 microxrcedds_agent"
+SKIP_KEYS="libopencv-dev libopencv-contrib-dev libopencv-imgproc-dev python-opencv python3-opencv
+ rti-connext-dds-6.0.1 microxrcedds_agent rtabmap_viz rtabmap_rviz_plugins rtabmap_examples rtabmap_demos"
 
 # patches for building Humble on 18.04
 if [ "$ROS_DISTRO" = "humble" ] || [ "$ROS_DISTRO" = "iron" ] && [ $(lsb_release --codename --short) = "bionic" ]; then
@@ -137,10 +133,13 @@ rosdep install -y \
 	--rosdistro ${ROS_DISTRO} \
 	--skip-keys "$SKIP_KEYS"
 
+export MAKEFLAGS="-j4" # Can be ignored if you have a lot of RAM (>16GB)
+
 # build it all - for verbose, see https://answers.ros.org/question/363112/how-to-see-compiler-invocation-in-colcon-build
 colcon build \
 	--merge-install \
-	--cmake-args -DCMAKE_BUILD_TYPE=Release 
+	--cmake-args -DCMAKE_BUILD_TYPE=Release \
+	--metas /colcon.meta 
     
 # remove build files
 rm -rf ${ROS_ROOT}/src

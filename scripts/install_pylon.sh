@@ -9,9 +9,9 @@ if [ ! -f ./pylon.tar.gz ]; then
 fi
 
 if [ $ARCH == "arm64" ]; then 
-    wget -O pylon.tar.gz https://downloads-ctf.baslerweb.com/dg51pdwahxgw/2n0895dRYhYMngejm33gao/1302df1b607a8197feadda7e739645de/pylon-7.5.0.15658-linux-aarch64_setup.tar.gz
+    wget -q -O pylon.tar.gz https://downloads-ctf.baslerweb.com/dg51pdwahxgw/2n0895dRYhYMngejm33gao/1302df1b607a8197feadda7e739645de/pylon-7.5.0.15658-linux-aarch64_setup.tar.gz
 else 
-    wget -O pylon.tar.gz https://downloads-ctf.baslerweb.com/dg51pdwahxgw/2Yng7CRH1jg02IKHvbUsNR/6adf0ef8b4d37cd33d37f432065893b8/pylon-7.5.0.15658_linux-x86_64_setup.tar.gz
+    wget -q -O pylon.tar.gz https://downloads-ctf.baslerweb.com/dg51pdwahxgw/2Yng7CRH1jg02IKHvbUsNR/6adf0ef8b4d37cd33d37f432065893b8/pylon-7.5.0.15658_linux-x86_64_setup.tar.gz
 fi
 
 mkdir -p ./pylon_install

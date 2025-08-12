@@ -40,12 +40,8 @@ ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
-COPY scripts/install_ros2.sh /
+COPY scripts/install_ros2.sh scripts/colcon.meta /
 RUN /bin/sh -c /install_ros2.sh
-
-# Install RTABMap
-COPY scripts/install_rtabmap.sh /
-RUN /bin/sh -c /install_rtabmap.sh
 
 # Install PTP binaries
 COPY scripts/install_ptp.sh /
