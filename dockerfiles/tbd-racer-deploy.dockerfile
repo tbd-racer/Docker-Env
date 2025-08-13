@@ -16,21 +16,9 @@ RUN /bin/sh -c /install_cmake.sh
 COPY scripts/install_opencv.sh /
 RUN /bin/sh -c /install_opencv.sh
 
-# Install GTSAM
-COPY scripts/install_gtsam.sh /
-RUN /bin/sh -c /install_gtsam.sh
-
-# Install the patched Apriltag library
-COPY scripts/install_apriltag.sh /
-RUN /bin/sh -c /install_apriltag.sh
-
 # Install Sophus
 COPY scripts/install_sophus.sh /
 RUN /bin/sh -c /install_sophus.sh
-
-# Install Phoenix6
-# COPY scripts/install_phoenix6.sh /
-# RUN /bin/sh -c /install_phoenix6.sh
 
 # Install Pylon
 COPY scripts/install_pylon.sh /
@@ -46,6 +34,10 @@ RUN /bin/sh -c /install_ros2.sh
 # Install PTP binaries
 COPY scripts/install_ptp.sh /
 RUN /bin/sh -c /install_ptp.sh
+
+# Install ZED SDK binaries
+COPY scripts/install_zed_sdk.sh /
+RUN /bin/sh -c /install_zed_sdk.sh deploy
 
 # setup the entrypoint
 # commands will be appended/run by the entrypoint which sources the ROS environment
