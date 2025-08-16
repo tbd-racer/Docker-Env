@@ -8,8 +8,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DISTRO=ubuntu2204
 
 # Install newer version of CMAKE
-COPY scripts/install_cmake.sh /
-RUN /bin/sh -c /install_cmake.sh
+# can skip this now since we are using a base image that has cmake 3.31
+# COPY scripts/install_cmake.sh /
+# RUN /bin/sh -c /install_cmake.sh
 
 # Install opencv with CUDA enabled
 COPY scripts/install_opencv.sh /
