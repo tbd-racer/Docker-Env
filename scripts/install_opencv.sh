@@ -8,22 +8,12 @@ install_opencv () {
     echo ""
     if [[ $model == *"Orin"* ]]; then
         echo "Detecting a Jetson Nano Orin."
-    # Use always "-j 4"
-        NO_JOB=4
         ARCH=8.7
         PTX="sm_87"
     elif [[ $model == *"Jetson Nano"* ]]; then
         echo "Detecting a regular Jetson Nano."
         ARCH=5.3
         PTX="sm_53"
-    # Use "-j 4" only swap space is larger than 5.5GB
-    FREE_MEM="$(free -m | awk '/^Swap/ {print $2}')"
-    if [[ "FREE_MEM" -gt "5500" ]]; then
-    NO_JOB=4
-    else
-    echo "Due to limited swap, make only uses 1 core"
-    NO_JOB=1
-    fi
     else
         echo "Unable to determine the Jetson Nano model."
         exit 1
@@ -39,34 +29,21 @@ install_opencv () {
 
     # install the common dependencies
     apt update
-    apt install -y --no-install-recommends \
-    libjpeg-dev libjpeg8-dev libjpeg-turbo8-dev \
-    libpng-dev libtiff-dev libglew-dev \
-    libavcodec-dev libavformat-dev libswscale-dev \
-    python3-pip \
-    libxvidcore-dev libx264-dev \
-    libtbb-dev libxine2-dev \
-    libv4l-dev v4l-utils qv4l2 \
-    libtesseract-dev libpostproc-dev \
-    libvorbis-dev \
-    libfaac-dev libmp3lame-dev libtheora-dev \
-    libopencore-amrnb-dev libopencore-amrwb-dev \
-    libopenblas-dev libatlas-base-dev libblas-dev \
-    liblapack-dev liblapacke-dev libeigen3-dev gfortran \
-    libhdf5-dev libprotobuf-dev protobuf-compiler \
-    libgoogle-glog-dev libgflags-dev
+    apt install --no-install-recommends -y build-essential git libgtk2.0-dev pkg-config libavcodec-dev \
+      libavformat-dev libswscale-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev python3-numpy \
+      libtbb12 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libv4l-dev v4l-utils qv4l2 curl libeigen3-dev
 
     # remove old versions or previous builds
     cd ~ 
     rm -rf opencv*
+
     # download the latest version
     git clone --depth=1 https://github.com/opencv/opencv.git -b "4.10.0"
     git clone --depth=1 https://github.com/opencv/opencv_contrib.git -b "4.10.0"
 
     # set install dir
-    cd ~/opencv
-    mkdir build
-    cd build
+    mkdir -p ~/opencv/build
+    cd ~/opencv/build
 
     # run cmake
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
@@ -94,7 +71,7 @@ install_opencv () {
     -D WITH_V4L=ON \
     -D WITH_LIBV4L=ON \
     -D WITH_PROTOBUF=ON \
-    -D OPENCV_ENABLE_NONFREE=ON \
+    -D OPENCV_ENABLE_NONFREE=OFF \
     -D INSTALL_C_EXAMPLES=OFF \
     -D INSTALL_PYTHON_EXAMPLES=OFF \
     -D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
@@ -103,7 +80,7 @@ install_opencv () {
     -D CMAKE_CXX_FLAGS="-march=native -mtune=native" \
     -D CMAKE_C_FLAGS="-march=native -mtune=native" ..
 
-    make -j 6
+    make -j 7
 
     directory="/usr/include/opencv4/opencv2"
     if [ -d "$directory" ]; then
@@ -117,6 +94,10 @@ install_opencv () {
     # cleaning (frees 320 MB)
     make clean
     apt-get update
+
+    # cleanup apt   
+    rm -rf /var/lib/apt/lists/*
+    apt-get clean
 }
 
 cd ~

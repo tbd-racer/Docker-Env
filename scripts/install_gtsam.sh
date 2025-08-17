@@ -33,3 +33,7 @@ ldconfig
 
 # clean up the installation
 rm -rf /gtsam
+
+# cleanup apt   
+rm -rf /var/lib/apt/lists/*
+apt-get clean

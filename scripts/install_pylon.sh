@@ -23,3 +23,7 @@ tar -C /opt/pylon -xzf ./pylon_install/pylon-*.tar.gz
 chmod 755 /opt/pylon
 
 rm -rf ./pylon_install
+
+# cleanup apt   
+rm -rf /var/lib/apt/lists/*
+apt-get clean

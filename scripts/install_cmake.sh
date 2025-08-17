@@ -82,9 +82,9 @@ fi
 # Start the real work
 set -x
 
-apt-get update
+apt update
 # shellcheck disable=SC2086
-apt-get install -y ${packages}
+apt install -y ${packages}
 
 test -n "${get_keyring}" && (wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - > /usr/share/keyrings/kitware-archive-keyring.gpg)
 
@@ -94,17 +94,17 @@ then
   echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ ${release}-rc main" >> /etc/apt/sources.list.d/kitware.list
 fi
 
-apt-get update
+apt update
 test -n "${get_keyring}" && rm /usr/share/keyrings/kitware-archive-keyring.gpg
-apt-get install -y kitware-archive-keyring
+apt install -y --no-install-recommends kitware-archive-keyring
 
 cmake_version="3.28.6-0kitware1ubuntu22.04.1"
 
-apt purge cmake 
-apt install build-essential git -y --no-install-recommends
-apt install cmake=$cmake_version cmake-data=$cmake_version -y --no-install-recommends
+apt purge cmake -y
+apt install -y --no-install-recommends build-essential git cmake=$cmake_version \
+  cmake-data=$cmake_version
 apt-mark hold cmake cmake-data
 
 # cleanup apt   
 rm -rf /var/lib/apt/lists/*
-apt-get clean
+apt clean

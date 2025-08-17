@@ -23,6 +23,10 @@ RUN /bin/sh -c /install_apriltag.sh
 COPY scripts/install_pylon.sh /
 RUN /bin/sh -c /install_pylon.sh
 
+# Install PTP binaries
+COPY scripts/install_ptp.sh /
+RUN /bin/sh -c /install_ptp.sh
+
 # Install ROS2 Jazzy
 ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
@@ -30,10 +34,6 @@ ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
 COPY scripts/install_ros2.sh scripts/colcon.meta /
 RUN /bin/sh -c /install_ros2.sh
-
-# Install PTP binaries
-COPY scripts/install_ptp.sh /
-RUN /bin/sh -c /install_ptp.sh
 
 # Install Development Tools
 COPY scripts/install_dev_tools.sh /
