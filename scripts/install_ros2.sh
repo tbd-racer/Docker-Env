@@ -67,7 +67,8 @@ rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
 	vision_msgs xacro robot_state_publisher joint_state_publisher rosbag2_storage_mcap \
 	tf2_geometry_msgs cv_bridge image_transport robot_localization web_video_server \
 	image_geometry diagnostic_updater camera_info_manager pcl_ros octomap_ros rtabmap \
-	laser_geometry aruco_opencv_msgs aruco_msgs apriltag_msgs nav2_msgs gtsam \
+	laser_geometry aruco_opencv_msgs aruco_msgs apriltag_msgs nav2_msgs gtsam backward_ros \
+	nmea_msgs point_cloud_transport zed_msgs \
 > ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
