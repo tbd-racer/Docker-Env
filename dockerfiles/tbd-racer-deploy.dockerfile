@@ -16,9 +16,9 @@ RUN /bin/sh -c /install_cmake.sh
 COPY scripts/install_opencv.sh /
 RUN /bin/sh -c /install_opencv.sh
 
-# Install Sophus
-COPY scripts/install_sophus.sh /
-RUN /bin/sh -c /install_sophus.sh
+# Install the patched Apriltag library
+COPY scripts/install_apriltag.sh /
+RUN /bin/sh -c /install_apriltag.sh
 
 # Install Pylon
 COPY scripts/install_pylon.sh /
