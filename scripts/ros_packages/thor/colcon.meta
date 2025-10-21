@@ -1,0 +1,10 @@
+{
+    "names": {
+        "gtsam": {
+            "cmake-args": [
+                "-DGTSAM_USE_SYSTEM_EIGEN=ON",
+                "-DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF"
+            ]
+        },
+    }
+}
