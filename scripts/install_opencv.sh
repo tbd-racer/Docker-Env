@@ -63,11 +63,11 @@ install_opencv () {
     -D CUDA_ARCH_BIN=${ARCH} \
     -D CUDA_ARCH_PTX=${PTX} \
     -D WITH_CUDA=ON \
-    -D WITH_CUDNN=ON \
+    -D WITH_CUDNN=OFF \
     -D WITH_CUBLAS=ON \
     -D ENABLE_FAST_MATH=ON \
     -D CUDA_FAST_MATH=ON \
-    -D OPENCV_DNN_CUDA=ON \
+    -D OPENCV_DNN_CUDA=OFF \
     -D WITH_NVCUVID=OFF \
     -D WITH_NVCUVENC=OFF \
     -D WITH_QT=OFF \
