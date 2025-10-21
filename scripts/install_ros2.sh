@@ -70,8 +70,8 @@ apt-get install -y --no-install-recommends \
 # remove other versions of Python3
 # workaround for 'Could NOT find Python3 (missing: Python3_NumPy_INCLUDE_DIRS Development'
 apt purge -y python3.9 libpython3.9* || echo "python3.9 not found, skipping removal"
-ls -ll /usr/bin/python*
 
+export PIP_BREAK_SYSTEM_PACKAGES=1
 pip install fastapi uvicorn
     
 # create the ROS_ROOT directory
@@ -86,13 +86,13 @@ rosinstall_file=ros2.${ROS_DISTRO}.rosinstall
 rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${pkg_args[@]} > $rosinstall_file
 vcs import --retry 5 --shallow src < $rosinstall_file
 
-# support for plyon cameras
-git clone https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
+# support for pylon cameras
+git clone --depth 1 https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
 
 # micro-ros support with CAN agent
-git clone https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
-git clone https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs
-git clone https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent
+git clone --depth 1 https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
+git clone --depth 1 https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs 
+git clone --depth 1 https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent 
 
 # ZED camera support
 # git clone https://github.com/stereolabs/zed-ros2-wrapper.git -b master src/zed-ros2-wrapper
@@ -119,6 +119,7 @@ rosdep install -y \
 export MAKEFLAGS="-j4" # Can be ignored if you have a lot of RAM (>16GB)
 
 # build it all - for verbose, see https://answers.ros.org/question/363112/how-to-see-compiler-invocation-in-colcon-build
+# can apply this to allow older packages to build with newer cmake versions when needed -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 colcon build \
 	--merge-install \
 	--cmake-args -DCMAKE_BUILD_TYPE=Release \

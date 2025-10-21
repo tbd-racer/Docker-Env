@@ -29,7 +29,6 @@ COPY scripts/install_ptp.sh /
 RUN /bin/sh -c /install_ptp.sh
 
 # Install ROS2 Jazzy packages
-ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3

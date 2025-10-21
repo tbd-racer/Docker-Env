@@ -2,7 +2,7 @@
 
 set -eu
 
-CMAKE_VERSION=4.1.2
+CMAKE_VERSION=3.28.3
 
 help() {
   echo "Usage: $0 [--release <ubuntu-release>] [--rc]" > /dev/stderr
