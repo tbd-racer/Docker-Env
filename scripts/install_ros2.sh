@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
 # this script builds a ROS2 distribution from source
-# ROS_DISTRO, ROS_ROOT, ROS_PACKAGE environment variables should be set
+# ROS_DISTRO, ROS_ROOT environment variables should be set
 export ROS_DISTRO=jazzy
-export ROS_PACKAGE=ros_base
 export ROS_ROOT="/opt/ros/${ROS_DISTRO}/"
+packages_file="/packages.list"
+meta_file="/colcon.meta"
 
-echo "ROS2 builder => ROS_DISTRO=$ROS_DISTRO ROS_PACKAGE=$ROS_PACKAGE ROS_ROOT=$ROS_ROOT"
+# If a packages.list file exists in the config directory, read package names from it
+if [ -f "$packages_file" ]; then
+	echo "Found packages list: $packages_file"
+	# Read non-empty, non-comment lines, trim whitespace, and join with spaces
+	mapfile -t pkg_lines < <(grep -vE '^\s*(#|$)' "$packages_file" | sed 's/^\s*//;s/\s*$//')
+	if [ ${#pkg_lines[@]} -gt 0 ]; then
+		pkg_args=("${pkg_lines[@]}")
+	fi
+fi
+
+# otherwise, pkg_args will be empty and we can throw a fit
+if [ -z "${pkg_args+x}" ]; then
+	echo "No packages.list found or it is empty!"
+	exit 1
+fi
+
+echo "ROS2 builder => ROS_DISTRO=$ROS_DISTRO ROS_ROOT=$ROS_ROOT"
+echo "Packages to install: ${pkg_args[*]}"
 
 set -e
 #set -x
@@ -52,8 +70,8 @@ apt-get install -y --no-install-recommends \
 # remove other versions of Python3
 # workaround for 'Could NOT find Python3 (missing: Python3_NumPy_INCLUDE_DIRS Development'
 apt purge -y python3.9 libpython3.9* || echo "python3.9 not found, skipping removal"
-ls -ll /usr/bin/python*
 
+export PIP_BREAK_SYSTEM_PACKAGES=1
 pip install fastapi uvicorn
     
 # create the ROS_ROOT directory
@@ -62,24 +80,19 @@ cd ${ROS_ROOT}
     
 # download ROS sources
 # https://answers.ros.org/question/325245/minimal-ros2-installation/?answer=325249#post-id-325249
-rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${ROS_PACKAGE} \
-	launch_xml launch_yaml launch_testing launch_testing_ament_cmake example_interfaces \
-	vision_msgs xacro robot_state_publisher joint_state_publisher rosbag2_storage_mcap \
-	tf2_geometry_msgs cv_bridge image_transport robot_localization web_video_server \
-	image_geometry diagnostic_updater camera_info_manager pcl_ros octomap_mapping octomap_ros \
-	laser_geometry aruco_opencv_msgs aruco_msgs apriltag_msgs nav2_msgs gtsam backward_ros \
-	nmea_msgs point_cloud_transport zed_msgs sophus \
-> ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
-cat ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
-vcs import --retry 5 --shallow src < ros2.${ROS_DISTRO}.${ROS_PACKAGE}.rosinstall
 
-# support for plyon cameras
-git clone https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
+# Call rosinstall_generator with the package args
+rosinstall_file=ros2.${ROS_DISTRO}.rosinstall
+rosinstall_generator --deps --rosdistro ${ROS_DISTRO} ${pkg_args[@]} > $rosinstall_file
+vcs import --retry 5 --shallow src < $rosinstall_file
+
+# support for pylon cameras
+git clone --depth 1 https://github.com/coalman321/pylon-ros-camera.git -b humble src/pylon-ros-camera
 
 # micro-ros support with CAN agent
-git clone https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
-git clone https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs
-git clone https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent
+git clone --depth 1 https://github.com/tbd-racer/micro-ROS-Agent.git -b jazzy src/micro-ros-agent
+git clone --depth 1 https://github.com/micro-ROS/micro_ros_msgs.git -b humble src/micro-ros-msgs 
+git clone --depth 1 https://github.com/tbd-racer/Micro-XRCE-DDS-Agent.git -b can-support-jazzy src/micro-xrce-dds-agent 
 
 # ZED camera support
 # git clone https://github.com/stereolabs/zed-ros2-wrapper.git -b master src/zed-ros2-wrapper
@@ -106,10 +119,11 @@ rosdep install -y \
 export MAKEFLAGS="-j4" # Can be ignored if you have a lot of RAM (>16GB)
 
 # build it all - for verbose, see https://answers.ros.org/question/363112/how-to-see-compiler-invocation-in-colcon-build
+# can apply this to allow older packages to build with newer cmake versions when needed -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 colcon build \
 	--merge-install \
 	--cmake-args -DCMAKE_BUILD_TYPE=Release \
-	--metas /colcon.meta 
+	--metas $meta_file
     
 # remove build files
 rm -rf ${ROS_ROOT}/src

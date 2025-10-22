@@ -7,7 +7,7 @@ def main() -> None:
         "build_image", description="builds the intended docker image"
     )
     parser.add_argument(
-        "type", choices=["develop", "deploy"], help="Image type to build"
+        "type", choices=["develop", "orin", "thor"], help="Image type to build"
     )
     parser.add_argument(
         "-c", "--clean", action="store_true", help="Force the build to a clean state"
@@ -51,11 +51,20 @@ def main() -> None:
             ),
         ]
 
-    elif args.type == "deploy":
-        settings["file"] = os.path.join("dockerfiles", "tbd-racer-deploy.dockerfile")
+    elif args.type == "orin":
+        settings["file"] = os.path.join("dockerfiles", "tbd-racer-orin.dockerfile")
         settings["cuda_arch"] = "arm64"
         settings["docker_arch"] = "linux/arm64"
+        settings["distro"] = "ubuntu2204"
         settings["tags"] = ["latest", settings["git_hash"]]
+
+    elif args.type == "thor":
+        settings["file"] = os.path.join("dockerfiles", "tbd-racer-thor.dockerfile")
+        settings["cuda_arch"] = "arm64"
+        settings["docker_arch"] = "linux/arm64"
+        settings["distro"] = "ubuntu2404"
+        settings["tags"] = ["latest", settings["git_hash"]]
+
 
     else:
         print(f"Uknown build type {args.type}")

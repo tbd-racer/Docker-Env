@@ -1,26 +1,34 @@
 #!/bin/bash
 set -e
-install_opencv () {
 
-    # Read the model information from /proc/device-tree/model and remove null bytes
-    model="Orin"
+MODEL=$1
+echo "Jetson Model: $MODEL"
+
+install_opencv () {
     # Check if the model information contains "Jetson Nano Orion"
     echo ""
-    if [[ $model == *"Orin"* ]]; then
-        echo "Detecting a Jetson Nano Orin."
+    if [[ $MODEL == *"Thor"* ]]; then
+        echo "Detecting a Jetson Thor."
+        ARCH=12.1
+        PTX="sm_121"
+        CV_VERSION="4.x"
+    elif [[ $MODEL == *"Orin"* ]]; then
+        echo "Detecting a Jetson Orin."
         ARCH=8.7
         PTX="sm_87"
-    elif [[ $model == *"Jetson Nano"* ]]; then
+        CV_VERSION="4.10.0"
+    elif [[ $MODEL == *"Jetson Nano"* ]]; then
         echo "Detecting a regular Jetson Nano."
         ARCH=5.3
         PTX="sm_53"
+        CV_VERSION="4.10.0"
     else
-        echo "Unable to determine the Jetson Nano model."
+        echo "Unable to determine the Jetson model."
         exit 1
     fi
     echo ""
 
-    echo "Installing OpenCV 4.10.0"
+    echo "Installing OpenCV ${CV_VERSION} for CUDA architecture ${ARCH}..."
 
     # reveal the CUDA location
     cd ~
@@ -38,8 +46,8 @@ install_opencv () {
     rm -rf opencv*
 
     # download the latest version
-    git clone --depth=1 https://github.com/opencv/opencv.git -b "4.10.0"
-    git clone --depth=1 https://github.com/opencv/opencv_contrib.git -b "4.10.0"
+    git clone --depth=1 https://github.com/opencv/opencv.git -b $CV_VERSION
+    git clone --depth=1 https://github.com/opencv/opencv_contrib.git -b $CV_VERSION
 
     # set install dir
     mkdir -p ~/opencv/build
@@ -49,16 +57,17 @@ install_opencv () {
     cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D CMAKE_INSTALL_PREFIX=/usr \
     -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
+    -D CUDNN_INCLUDE_DIR=/usr/include/$(uname -i)-linux-gnu \
     -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
     -D WITH_OPENCL=OFF \
     -D CUDA_ARCH_BIN=${ARCH} \
     -D CUDA_ARCH_PTX=${PTX} \
     -D WITH_CUDA=ON \
-    -D WITH_CUDNN=ON \
+    -D WITH_CUDNN=OFF \
     -D WITH_CUBLAS=ON \
     -D ENABLE_FAST_MATH=ON \
     -D CUDA_FAST_MATH=ON \
-    -D OPENCV_DNN_CUDA=ON \
+    -D OPENCV_DNN_CUDA=OFF \
     -D WITH_NVCUVID=OFF \
     -D WITH_NVCUVENC=OFF \
     -D WITH_QT=OFF \
@@ -77,8 +86,9 @@ install_opencv () {
     -D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
     -D OPENCV_GENERATE_PKGCONFIG=ON \
     -D BUILD_EXAMPLES=OFF \
-    -D CMAKE_CXX_FLAGS="-march=native -mtune=native" \
-    -D CMAKE_C_FLAGS="-march=native -mtune=native" ..
+    ..
+    # -D CMAKE_CXX_FLAGS="-march=native -mtune=native" \
+    # -D CMAKE_C_FLAGS="-march=native -mtune=native" \
 
     make -j 7
 

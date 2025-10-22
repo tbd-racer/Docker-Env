@@ -2,6 +2,8 @@
 
 set -eu
 
+CMAKE_VERSION=3.28.3
+
 help() {
   echo "Usage: $0 [--release <ubuntu-release>] [--rc]" > /dev/stderr
 }
@@ -98,11 +100,13 @@ apt update
 test -n "${get_keyring}" && rm /usr/share/keyrings/kitware-archive-keyring.gpg
 apt install -y --no-install-recommends kitware-archive-keyring
 
-cmake_version="3.28.6-0kitware1ubuntu22.04.1"
+cmake_version_str=$(apt-cache madison cmake | grep ${CMAKE_VERSION} | awk -F'|' '{gsub(/^ +| +$/,"",$2); print $2}' )
+
+echo "Installing cmake version ${cmake_version_str} ..."
 
 apt purge cmake -y
-apt install -y --no-install-recommends build-essential git cmake=$cmake_version \
-  cmake-data=$cmake_version
+apt install -y --no-install-recommends build-essential git cmake=$cmake_version_str \
+  cmake-data=$cmake_version_str
 apt-mark hold cmake cmake-data
 
 # cleanup apt   

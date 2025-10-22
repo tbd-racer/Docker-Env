@@ -14,7 +14,7 @@ RUN /bin/sh -c /install_cmake.sh
 
 # Install opencv with CUDA enabled
 COPY scripts/install_opencv.sh /
-RUN /bin/sh -c /install_opencv.sh
+RUN /bin/sh -c "/install_opencv.sh Orin"
 
 # Install the patched Apriltag library
 COPY scripts/install_apriltag.sh /
@@ -29,11 +29,10 @@ COPY scripts/install_ptp.sh /
 RUN /bin/sh -c /install_ptp.sh
 
 # Install ROS2 Jazzy packages
-ENV ROS_PACKAGE=ros_base
 ENV ROS_DISTRO=jazzy
 ENV ROS_ROOT=/opt/ros/jazzy
 ENV ROS_PYTHON_VERSION=3
-COPY scripts/install_ros2.sh scripts/colcon.meta /
+COPY scripts/install_ros2.sh scripts/ros_packages/orin /
 RUN /bin/sh -c /install_ros2.sh
 
 # Install ZED SDK binaries

@@ -14,8 +14,7 @@ mkdir build
 cd build
 
 # Configure apriltag to build
-cmake -D CMAKE_BUILD_TYPE=RELEASE \
--D BUILD_TESTS=OFF \
+cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_TESTS=OFF \
 ..
 
 # build it
