@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-images:
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - [X64, linux/amd64]
+          - [ARM64, linux/arm64]
+        image:
+          - develop
+          - thor
+          - orin
+        exclude:
+          - platform: X64
+            image: thor
+          - platform: X64
+            image: orin
+
+
+    name: Build ${{ matrix.image }} on ${{ matrix.platform[0] }}
+    runs-on: 
+    - self-hosted
+    - ${{ matrix.platform[0] }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: build and push docker image to registry
+        uses: docker/build-action@v5
+        with:
+          platforms: linux/amd64
+          push: true
+          file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
+          cache-from: type=registry,ref=coalman321/tbd-racer-develop:latest-${{matrix.image}}-${{matrix.platform[0]}}
+          cache-to: type=inline

@@ -1,4 +1,4 @@
-name: Deployment Docker Image CI
+name: Docker Image Deployment
 
 on:
   push:
@@ -25,14 +25,3 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: build and push docker image to registry
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/arm64
-          push: true
-          file: dockerfiles/tbd-racer-deploy.dockerfile
-          tags: |
-            coalman321/tbd-racer-deploy:latest
-            coalman321/tbd-racer-deploy:${{steps.vars.outputs.sha_short}}
-          cache-from: type=registry,ref=coalman321/tbd-racer-deploy:latest
-          cache-to: type=inline
