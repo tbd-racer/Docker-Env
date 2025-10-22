@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["main"]
   workflow_dispatch:
-    
+
 
 jobs:
   build-images:
@@ -19,9 +19,9 @@ jobs:
           - thor
           - orin
         exclude:
-          - platform: X64
+          - platform: [X64, linux/amd64]
             image: thor
-          - platform: X64
+          - platform: [X64, linux/amd64]
             image: orin
 
 
