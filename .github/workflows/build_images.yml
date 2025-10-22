@@ -38,7 +38,7 @@ jobs:
       - name: build the docker image
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64
+          platforms: ${{ matrix.platform[1] }}
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
           cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           cache-to: type=inline
