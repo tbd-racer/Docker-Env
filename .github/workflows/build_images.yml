@@ -35,11 +35,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: build and push docker image to registry
-        uses: docker/build-action@v5
+      - name: build the docker image
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           push: true
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
           cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           cache-to: type=inline
+          outputs: type=cacheonly
