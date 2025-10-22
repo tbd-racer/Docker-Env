@@ -41,5 +41,5 @@ jobs:
           platforms: linux/amd64
           push: true
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
-          cache-from: type=registry,ref=coalman321/tbd-racer-develop:latest-${{matrix.image}}-${{matrix.platform[0]}}
+          cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           cache-to: type=inline
