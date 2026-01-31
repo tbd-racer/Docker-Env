@@ -1,0 +1,21 @@
+{
+    "context": ".",
+    "dockerFile": "Dockerfile",
+    "remoteUser": "ubuntu",
+    "containerUser": "ubuntu",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "ms-iot.vscode-ros",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.debugpy",
+                "ms-python.black-formatter",
+                "streetsidesoftware.code-spell-checker"
+            ]
+        }
+    },
+    "runArgs": ["--network", "host"],
+    "capAdd": ["NET_RAW", "NET_ADMIN"]
+}
