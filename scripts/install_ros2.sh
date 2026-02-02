@@ -65,7 +65,10 @@ apt-get install -y --no-install-recommends \
 		libtinyxml2-dev \
 		libcunit1-dev \
 		libpcap-dev \
-        libudev-dev
+        libudev-dev \
+		nlohmann-json3-dev \
+		libgstreamer-plugins-bad1.0-dev \
+		gstreamer1.0-plugins-bad \
 
 # remove other versions of Python3
 # workaround for 'Could NOT find Python3 (missing: Python3_NumPy_INCLUDE_DIRS Development'

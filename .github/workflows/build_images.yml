@@ -10,11 +10,11 @@ jobs:
       fail-fast: true
       matrix:
         platform:
-          - [X64, linux/amd64]
+          # - [X64, linux/amd64]
           - [ARM64, linux/arm64]
         image:
           - develop
-          - thor
+          # - thor
           - orin
         exclude:
           - platform: X64
@@ -33,11 +33,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: build and push docker image to registry
-        uses: docker/build-action@v5
+      - name: login to docker registry
+        uses: docker/login-action@v3
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
         with:
-          platforms: linux/amd64
-          push: true
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: build and push docker image to registry
+        uses: docker/build-push-action@v5
+        with:
+          platforms: ${{ matrix.platform[1] }}
+          push: ${{ github.event_name == 'pull_request' && github.base_ref == 'main' }}
+          tags: coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
-          cache-from: type=registry,ref=coalman321/tbd-racer-develop:latest-${{matrix.image}}-${{matrix.platform[0]}}
+          cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           cache-to: type=inline
