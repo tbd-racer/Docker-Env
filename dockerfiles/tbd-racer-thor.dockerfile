@@ -11,6 +11,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
 COPY scripts/install_cmake.sh /
 RUN /bin/sh -c /install_cmake.sh
 
+# Install GStreamer from source
+COPY scripts/install_gstreamer.sh /
+RUN /bin/sh -c "/install_gstreamer.sh Thor"
+
 # Install opencv with CUDA enabled
 COPY scripts/install_opencv.sh /
 RUN /bin/sh -c "/install_opencv.sh Thor"
