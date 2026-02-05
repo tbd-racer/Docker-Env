@@ -38,8 +38,8 @@ install_opencv () {
     # install the common dependencies
     apt update
     apt install --no-install-recommends -y build-essential git libgtk2.0-dev pkg-config libavcodec-dev \
-      libavformat-dev libswscale-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev python3-numpy \
-      libtbb12 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libv4l-dev v4l-utils qv4l2 curl libeigen3-dev
+      libavformat-dev libswscale-dev python3-numpy libtbb12 libtbb-dev libjpeg-dev libpng-dev libtiff-dev \
+      libv4l-dev v4l-utils qv4l2 curl libeigen3-dev
 
     # remove old versions or previous builds
     cd ~ 
