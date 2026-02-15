@@ -1,8 +1,21 @@
-name: Docker Image CI
+name: Docker Image Release
 
 on:
-  pull_request:
-    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for the release and images'
+        required: true
+      name:
+        description: 'Release name (optional)'
+        required: false
+      body:
+        description: 'Release notes body (optional)'
+        required: false
+      prerelease:
+        description: 'Mark release as prerelease (true/false)'
+        required: false
+        default: 'false'
 
 jobs:
   build-images:
@@ -44,7 +57,25 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: ${{ matrix.platform[1] }}
-          push: false
+          push: true
+          tags: coalman321/tbd-racer:${{ github.event.inputs.tag }}-${{matrix.image}}-${{matrix.platform[0]}}
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
           cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
           cache-to: type=inline
+
+  create-release:
+    needs: build-images
+    runs-on:
+      - self-hosted
+      - ARM64
+    permissions:
+      contents: write
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          name: ${{ github.event.inputs.name }}
+          body: ${{ github.event.inputs.body }}
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease }}
