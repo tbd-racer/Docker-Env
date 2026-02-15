@@ -59,7 +59,9 @@ jobs:
           push: true
           tags: coalman321/tbd-racer:${{ github.event.inputs.tag }}-${{matrix.image}}-${{matrix.platform[0]}}
           file: dockerfiles/tbd-racer-${{matrix.image}}.dockerfile
-          cache-from: type=registry,ref=coalman321/tbd-racer:latest-${{matrix.image}}-${{matrix.platform[0]}}
+
+          # Disable caching for release
+          cache-from: type=inline
           cache-to: type=inline
 
   create-release:
